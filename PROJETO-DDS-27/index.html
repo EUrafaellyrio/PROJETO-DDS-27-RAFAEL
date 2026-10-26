@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casos de Teste - trocAqui</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1 class="titulo-principal">Casos de Teste - trocAqui</h1>
+      <h2 class="slogan">Documentação dos casos de teste do sistema de trocas</h2>
+    </header>
+
+    <nav>
+      <ul class="menu">
+        <li><a class="menu-item" href="#sobre">Sobre</a></li>
+        <li><a class="menu-item" href="#requisitos">Requisitos</a></li>
+        <li><a class="menu-item" href="#casos">Casos de Teste</a></li>
+        <li><a class="menu-item" href="#resumo">Resumo</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <div class="resumo-evento" id="sobre">
+        <h2>Sobre o sistema</h2>
+        <p>
+          O trocAqui é uma plataforma web de escambo. Ofertantes cadastram
+          produtos, interessados demonstram interesse e o ofertante recebe o
+          contato de quem se interessou. O sistema usa Node.js, Express, EJS e
+          MySQL, com três perfis: administrador, ofertante e interessado.
+        </p>
+        <p>
+          Projeto: <a class="link" href="https://github.com/GregoryVelosoS/PROJETO-DDS-23">GitHub</a>
+          | Documentação: <a class="link" href="https://docs.google.com/document/d/1G_KWldarJCGzYe4JO-5q_BdVk44vP4Y2QejA0cMhBkw/edit?usp=sharing">Google Docs</a>
+        </p>
+        <p>
+          Dados de teste: administrador <b>greg@gmail.com</b> / senha
+          <b>greg</b> (vem do script SQL do projeto).
+        </p>
+      </div>
+
+      <hr />
+
+      <h2 id="requisitos">Requisitos analisados</h2>
+      <section id="cards">
+        <div class="card"><b>RF01</b><br />Cadastro de Usuários (Essencial)</div>
+        <div class="card"><b>RF02</b><br />Login de Usuários (Essencial)</div>
+        <div class="card"><b>RF07</b><br />Cadastro de Produtos (Essencial)</div>
+        <div class="card"><b>RF26</b><br />Restrição de Rotas Ocultas (Essencial)</div>
+      </section>
+
+      <hr />
+
+      <h2 id="casos">Casos de Teste</h2>
+
+      <label for="filtro">Filtrar por tipo: </label>
+      <select id="filtro" onchange="filtrar()">
+        <option value="todos">Todos</option>
+        <option value="Positivo">Positivo</option>
+        <option value="Negativo">Negativo</option>
+      </select>
+
+      <table id="tabela">
+        <tr>
+          <th>ID</th>
+          <th>Requisito</th>
+          <th>Tipo</th>
+          <th>Pré-condição</th>
+          <th>Dados de entrada</th>
+          <th>Passos</th>
+          <th>Resultado esperado</th>
+          <th>Status</th>
+        </tr>
+
+        <tr>
+          <td>CT01</td>
+          <td>RF01 - Cadastro de Usuários</td>
+          <td>Positivo</td>
+          <td>Estar deslogado e na tela de cadastro. E-mail ainda não cadastrado.</td>
+          <td>Nome: Maria Silva<br />E-mail: maria@teste.com<br />Telefone: 27999990000<br />Senha: 123456</td>
+          <td>1. Abrir a tela de cadastro.<br />2. Preencher todos os campos.<br />3. Clicar em Cadastrar.</td>
+          <td>Usuário criado com perfil comum (nunca administrador) e redirecionado para a tela de login.</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT02</td>
+          <td>RF01 - Cadastro de Usuários</td>
+          <td>Negativo</td>
+          <td>Estar deslogado e na tela de cadastro.</td>
+          <td>Todos os campos em branco</td>
+          <td>1. Abrir a tela de cadastro.<br />2. Não preencher nada.<br />3. Clicar em Cadastrar.</td>
+          <td>Usuário não é criado e o sistema avisa que os campos são obrigatórios.</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT03</td>
+          <td>RF02 - Login de Usuários</td>
+          <td>Positivo</td>
+          <td>Usuário administrador existente no banco.</td>
+          <td>E-mail: greg@gmail.com<br />Senha: greg</td>
+          <td>1. Abrir a tela de login.<br />2. Digitar e-mail e senha.<br />3. Clicar em Entrar.</td>
+          <td>Login realizado, cookie JWT HttpOnly criado e usuário levado para a área do sistema.</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT04</td>
+          <td>RF02 - Login de Usuários</td>
+          <td>Negativo</td>
+          <td>Usuário administrador existente no banco.</td>
+          <td>E-mail: greg@gmail.com<br />Senha: senhaerrada</td>
+          <td>1. Abrir a tela de login.<br />2. Digitar e-mail correto e senha errada.<br />3. Clicar em Entrar.</td>
+          <td>Login negado, nenhum cookie criado e exibida a tela de erro ou alerta de credenciais inválidas (RF28).</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT05</td>
+          <td>RF07 - Cadastro de Produtos</td>
+          <td>Positivo</td>
+          <td>Logado como ofertante.</td>
+          <td>Nome: Bicicleta Aro 26<br />Características: Usada, em bom estado<br />Foto: bike.jpg</td>
+          <td>1. Abrir o cadastro de produtos.<br />2. Preencher nome e características.<br />3. Escolher a foto (o preview deve aparecer).<br />4. Clicar em Salvar.</td>
+          <td>Produto salvo e exibido na lista do ofertante (/produtos/listar), com a foto.</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT06</td>
+          <td>RF07 - Cadastro de Produtos</td>
+          <td>Negativo</td>
+          <td>Logado como ofertante.</td>
+          <td>Nome e características em branco, sem foto</td>
+          <td>1. Abrir o cadastro de produtos.<br />2. Deixar os campos vazios.<br />3. Clicar em Salvar.</td>
+          <td>Produto não é salvo e o sistema avisa que os campos são obrigatórios.</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT07</td>
+          <td>RF26 - Restrição de Rotas Ocultas</td>
+          <td>Positivo</td>
+          <td>Logado como administrador (greg@gmail.com).</td>
+          <td>URL da tela de gestão de usuários</td>
+          <td>1. Fazer login como administrador.<br />2. Acessar a gestão de usuários pelo menu ou pela URL.</td>
+          <td>A tela administrativa abre e mostra a lista de usuários.</td>
+          <td>Não executado</td>
+        </tr>
+
+        <tr>
+          <td>CT08</td>
+          <td>RF26 - Restrição de Rotas Ocultas</td>
+          <td>Negativo</td>
+          <td>Logado como interessado ou ofertante.</td>
+          <td>URL da tela de gestão de usuários digitada direto no navegador</td>
+          <td>1. Fazer login com perfil comum.<br />2. Digitar a URL administrativa na barra do navegador.</td>
+          <td>Acesso bloqueado, com redirecionamento para a tela de erro ou outra página. Nenhum dado de usuários é exibido.</td>
+          <td>Não executado</td>
+        </tr>
+      </table>
+
+      <hr />
+
+      <div class="resumo-evento" id="resumo">
+        <h2>Resumo</h2>
+        <p>Total de casos de teste: <b id="total">0</b></p>
+        <p>Casos positivos: <b id="positivos">0</b></p>
+        <p>Casos negativos: <b id="negativos">0</b></p>
+        <p>Requisitos analisados: <b>4</b>, cada um com 1 cenário positivo e 1 negativo.</p>
+      </div>
+    </main>
+
+    <footer>
+      <h3 class="rodape">Casos de Teste - trocAqui - 2026</h3>
+      <h3 class="rodape">Feito por: Rafael Lyrio</h3>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
